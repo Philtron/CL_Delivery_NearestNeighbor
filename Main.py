@@ -1,9 +1,10 @@
+import Distances
 import Packages
 from HashTable import HashTable
 
 ht1 = HashTable()
 
-filename = 'PackageFile.csv'
+filename = 'Data/PackageFile.csv'
 Packages.read_load(filename, ht1)
 
 mypack = ht1.search(14)
@@ -15,6 +16,7 @@ for i in range(len(ht1.table)):
     for j in range(len(ht1.table[i])):
         mypack = ht1.search(count)
         count += 1
-        print(f"package id {mypack.package_id}, {mypack.address} {mypack.city} {mypack.state} {mypack.zip_code}, "
-              f"{mypack.delivery_deadline},{mypack.mass_kilo}, {mypack.special_notes} ")
-print('Test change')
+        print(mypack)
+
+ht2 = HashTable()
+Distances.read_load('Data/DistanceTable.csv', 'Data/DistanceLocations.csv', ht2)
