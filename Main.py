@@ -1,4 +1,5 @@
 import Distances
+import Logic
 import Packages
 from HashTable import HashTable
 #
@@ -32,3 +33,7 @@ print(f"Name: {distance_names[row]}")
 print(f"Name: {distance_names[col]}")
 
 print(f"Distance from {name1} to {name2} is {Distances.get_distance(row, col, distance_list)}")
+print(distance_list[1])
+print(Logic.nearest_neighbor(distance_list[1]))
+print(distance_list[7])
+print(Logic.nearest_neighbor(distance_list[7]))
