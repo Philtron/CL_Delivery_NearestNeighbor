@@ -1,39 +1,51 @@
 import Distances
-import Logic
+import Trucks
 import Packages
 from HashTable import HashTable
+import csv
+
 #
 ht1 = HashTable()
 
 filename = 'Data/PackageFile.csv'
 Packages.read_load(filename, ht1)
+
+# for i, rows in enumerate(ht1.table):
+#     for j, cols in enumerate(ht1.table[i]):
+#         print(cols[1].address)
+
+filename = "Data/DistanceTable2.csv"
+distance_list = Distances.read_load(filename)
+
+print('***')
+
+# for i, business in enumerate(distance_list):
+#     for j, columns in enumerate(business):
+#         if '177 W Price Ave' in columns:
+#             print(f'HI {i}, {j}')
+#             x, y = i, j
+#             break
+#         if '2010 W 500 S' in columns:
+#             y2, x2 = i, j
+# (x, y, x2, y2) = Distances.get_index('177 W Price Ave', '2010 W 500 S', distance_list)
+# print(f"x {x}, y {y}, x2 {x2}, y2 {y2}")
+# print('***')
 #
-mypack = ht1.search(14)
-mypack2 = ht1.search(23)
-# print(f"package number 14 address: {mypack.address}")
-# print(f"package id: {mypack.package_id}, deadline: {mypack.delivery_deadline}")
+# distance_row = distance_list[1]
+# del distance_row[0]
+# print(distance_row)
+#
+#
+# (distance_row, index, min_distance) = Trucks.nearest_neighbor(distance_row)
+# print(f"Min Distance: {min_distance} Index: {index}")
+#
+# print(distance_row)
+#
+#
+# (distance_row, index, min_distance) = Trucks.nearest_neighbor(distance_row)
+# print(f"Min Distance: {min_distance} Index: {index}")
+# print(distance_row)
 
-# count = 1
-# for i in range(len(ht1.table)):
-#     for j in range(len(ht1.table[i])):
-#         mypack = ht1.search(count)
-#         count += 1
-#         print(mypack)
-
-ht2 = HashTable()
-distance_list, distance_names = Distances.read_load('Data/DistanceTable.csv', 'Data/DistanceLocations.csv', ht2)
-name1 = mypack.address
-name2 = 'Western Governors University'
-
-# for i in distance_names:
-#     print(i)
-row = Distances.get_index(name1, distance_names)
-col = Distances.get_index(name2, distance_names)
-print(f"Name: {distance_names[row]}")
-print(f"Name: {distance_names[col]}")
-
-print(f"Distance from {name1} to {name2} is {Distances.get_distance(row, col, distance_list)}")
-print(distance_list[1])
-print(Logic.nearest_neighbor(distance_list[1]))
-print(distance_list[7])
-print(Logic.nearest_neighbor(distance_list[7]))
+indexes_list = [5, 4, 11, 10]
+distances, used_indexes = Trucks.nearest_neighbor(distance_list, indexes_list)
+print(f"distances: {distances}, used indexes: {used_indexes}")
