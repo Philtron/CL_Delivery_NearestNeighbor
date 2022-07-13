@@ -21,8 +21,7 @@ class Packages:
     def __str__(self):
 
         return f"Package ID: {self.package_id}, Address: {self.address} {self.city}, {self.state} {self.zip_code}. " \
-               f"Delivery Deadline: {self.delivery_deadline} Mass: {self.mass_kilo}kg, " \
-               f"Status: {self.status}"
+               f"Delivery Deadline: {self.delivery_deadline} Status: {self.status}"
 
 
 def read_load(filename, hash_table):
@@ -47,5 +46,7 @@ def get_package_indexes(package_list, package_hash_table, distance_list):
     index_list = [1]
     for package in package_list:
         my_package = package_hash_table.search(package)
+        # print(f'Appending {Distances.get_index(my_package.address, distance_list)} '
+        #       f'from packageID {my_package.package_id}')
         index_list.append(Distances.get_index(my_package.address, distance_list))
     return index_list

@@ -29,19 +29,19 @@ class Trucks:
             package.status = "en route"
 
     def deliver(self):  # TODO Add timestamp parameter
-        for package in self.package_list:
-            print(f"BLARGH {package.package_id} {package.address_index}" )
-        for i in self.index_list:
-            print(i)
+        # for package in self.package_list:
+        #     print(f"BLARGH {package.package_id} {package.address_index}" )
+        # for i in self.index_list:
+        #     print(i)
+
         for i, distance in enumerate(self.distances):
             self.total_distance += distance
             delivering_index = self.index_list[i+1]
-            # print(f'Self.index_list[i] = {self.index_list[i]}')
             for package in self.package_list:
 
                 if package.address_index == delivering_index:
                     package.status = "delivered"
-                    # print(f'Setting {package.package_id} to Delivered')
+
         print(self.total_distance)
 
     def list_packages(self):
