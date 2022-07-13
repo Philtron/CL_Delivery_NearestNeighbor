@@ -1,5 +1,8 @@
 import csv
 
+import Distances
+from HashTable import HashTable
+
 
 class Packages:
 
@@ -12,22 +15,20 @@ class Packages:
         self.delivery_deadline = delivery_deadline
         self.mass_kilo = mass_kilo
         self.special_notes = special_notes
+        self.address_index = None
+        self.status = "at the hub"
 
     def __str__(self):
-        # package = f"Package ID: {self.package_id}, Address: {self.address} {self.city}, {self.state} {self.zip_code}. " \
-        #           f"Delivery Deadline {self.delivery_deadline} Mass: {self.mass_kilo}kg, " \
-        #           f"Special Notes: {self.special_notes} "
-        # return package
+
         return f"Package ID: {self.package_id}, Address: {self.address} {self.city}, {self.state} {self.zip_code}. " \
-                  f"Delivery Deadline: {self.delivery_deadline} Mass: {self.mass_kilo}kg, " \
-                  f"Special Notes: {self.special_notes} "
+               f"Delivery Deadline: {self.delivery_deadline} Mass: {self.mass_kilo}kg, " \
+               f"Status: {self.status}"
 
 
 def read_load(filename, hash_table):
     with open(filename) as csvfile:
         my_reader = csv.reader(csvfile)
         for package in my_reader:
-            # print(package[0])
             package_id = int(package[0])
             address = package[1]
             city = package[2]
@@ -36,12 +37,15 @@ def read_load(filename, hash_table):
             delivery_deadline = package[5]
             mass_kilo = package[6]
             special_notes = package[7]
-
             my_package = Packages(package_id, address, city, state, zip_code, delivery_deadline, mass_kilo,
                                   special_notes)
-            # my_package = Packages(package[0], package[1], package[2], package[3], package[4], package[5], package[6],
-            #                       package[7])
+
             hash_table.insert(package_id, my_package)
 
 
-
+def get_package_indexes(package_list, package_hash_table, distance_list):
+    index_list = [1]
+    for package in package_list:
+        my_package = package_hash_table.search(package)
+        index_list.append(Distances.get_index(my_package.address, distance_list))
+    return index_list

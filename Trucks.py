@@ -1,39 +1,49 @@
+import Distances
+import Packages
+
+
+def load_truck(packageID_list, hash_table, distance_list):
+    truck_packages = []
+    index_list = Packages.get_package_indexes(packageID_list, hash_table, distance_list)
+
+    for package in packageID_list:
+        my_package = hash_table.search(package)
+        truck_packages.append(my_package)
+        # index_list.append(Distances.get_index(my_package.address, distance_list))
+    for package in truck_packages:
+        Distances.get_package_index(package, distance_list)
+    return truck_packages, index_list
+
+
 class Trucks:
-    # package_list = []
-    #
-    # def __init__(self, package_list):
-    #     self.package_list = package_list
-    pass
-
-
-# 5,4,11,10
-
-def nearest_neighbor(distance_list, indexes_list):
-    # indexes_list = [num - 1 for num in indexes_list]
-    # del distance_list[0]
-    min_distance = 100.0
+    package_list = []
+    index_list = []
     distances = []
-    used_indexes = []
-    index = indexes_list[0]
-    distance_row = distance_list[index]
-    # del distance_row[0]
-    print(f"first distance print {distance_row}")
+    total_distance = 0
 
-    for i in range(len(indexes_list)-1):
-        used_indexes.append(index)  # last used index need to jump to this row
+    def __init__(self, package_list, index_list, distances):
+        self.package_list = package_list
+        self.index_list = index_list
+        self.distances = distances
+        for package in self.package_list:
+            package.status = "en route"
 
-        for j in range(1, len(distance_row)):
+    def deliver(self):  # TODO Add timestamp parameter
+        for package in self.package_list:
+            print(f"BLARGH {package.package_id} {package.address_index}" )
+        for i in self.index_list:
+            print(i)
+        for i, distance in enumerate(self.distances):
+            self.total_distance += distance
+            delivering_index = self.index_list[i+1]
+            # print(f'Self.index_list[i] = {self.index_list[i]}')
+            for package in self.package_list:
 
-            distance_row[j] = float(distance_row[j])
-            if min_distance > distance_row[j] > 0.0:
-                if j in indexes_list and j not in used_indexes:
-                    min_distance = distance_row[j]
-                    index = j
+                if package.address_index == delivering_index:
+                    package.status = "delivered"
+                    # print(f'Setting {package.package_id} to Delivered')
+        print(self.total_distance)
 
-        distances.append(min_distance)
-        min_distance = 100.0
-        distance_row = distance_list[index]
-        print(distance_row)
-        # del distance_row[0]
-
-    return distances, used_indexes
+    def list_packages(self):
+        for package in self.package_list:
+            print(package)
