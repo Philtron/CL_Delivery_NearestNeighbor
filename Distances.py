@@ -40,7 +40,9 @@ def nearest_neighbor(distance_list, indexes_list):
         if indexes_list.count(num) > 1 and num not in used_duplicates:
             repeat_times = indexes_list.count(num)
             used_duplicates.append(num)
-            for i in range(repeat_times):
+            # print(f"used_duplicates: {used_duplicates}")
+
+            for i in range(repeat_times-1):
                 duplicates.append(num)
     print(f"duplicates: {duplicates}")
 
@@ -59,7 +61,7 @@ def nearest_neighbor(distance_list, indexes_list):
             distance_row[j] = float(distance_row[j])
             # print(f"min distance:{min_distance} index: {index} duplicates {duplicates}")
 
-            if min_distance > distance_row[j] and (j != index or j in duplicates):
+            if distance_row[j] < min_distance and (j != index or j in duplicates):
                 # print(f"{j} in {duplicates}? {j in duplicates}")
                 if j in indexes_list and j not in used_indexes:
                     min_distance = distance_row[j]
@@ -67,7 +69,10 @@ def nearest_neighbor(distance_list, indexes_list):
                 elif j in duplicates:
                     min_distance = 0
                     index = j
+                    # print(f"DUPLICATES BEFORE REMOVAL: {duplicates}")
+
                     duplicates.remove(j)
+                    # print(f"DUPLICATES: {duplicates}")
                 # print(f'duplicates after removal {duplicates}')
         used_indexes.append(index)  # 23 22 22
         distances.append(min_distance)  # 2.4 4.4
