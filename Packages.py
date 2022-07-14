@@ -17,11 +17,12 @@ class Packages:
         self.special_notes = special_notes
         self.address_index = None
         self.status = "at the hub"
+        self.delivered_time = None
 
     def __str__(self):
 
         return f"Package ID: {self.package_id}, Address: {self.address} {self.city}, {self.state} {self.zip_code}. " \
-               f"Delivery Deadline: {self.delivery_deadline} Status: {self.status}"
+               f"Delivery Deadline: {self.delivery_deadline} Status: {self.status} Delivered At: {self.delivered_time}"
 
 
 def read_load(filename, hash_table):

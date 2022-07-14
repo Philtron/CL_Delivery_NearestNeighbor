@@ -28,7 +28,6 @@ def get_distance(x, y, distance_list):
 
 def nearest_neighbor(distance_list, indexes_list):
     # duplicates = {x for x in indexes_list if indexes_list.count(x) > 1}
-    # print(duplicates)
     # for i in range(len(duplicates)):
     duplicates = []
     used_duplicates = []

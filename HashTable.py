@@ -1,5 +1,4 @@
 class HashTable:
-
     def __init__(self, table_size=10):
         self.table = []
         for i in range(table_size):
