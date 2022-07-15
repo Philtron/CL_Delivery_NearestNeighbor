@@ -14,12 +14,12 @@ def load_truck(packageID_list, hash_table, distance_list):
             my_package.address = '410 S State St'
 
         truck_packages.append(my_package)
-        # index_list.append(Distances.get_index(my_package.address, distance_list))
     for package in truck_packages:
         Distances.get_package_index(package, distance_list)
-    # return truck_packages, index_list
+        package.status = 'en route1'
     distances, used_indexes = Distances.nearest_neighbor(distance_list, index_list)
-    return truck_packages, index_list, distances
+    # print(f"used_indexes: {used_indexes}")
+    return truck_packages, used_indexes, distances
 
 
 class Trucks:
@@ -28,6 +28,7 @@ class Trucks:
     distances = []
     total_distance = 0
     start_time = None
+    end_time = None
 
     def __init__(self, package_list, index_list, distances, start_time):
         self.package_list = package_list
@@ -42,22 +43,16 @@ class Trucks:
 
         for i, rows in enumerate(hash_table.table):
             for j, cols in enumerate(hash_table.table[i]):
-                cols[1].status = 'en route'
-                cols[1].delivered_time = None
+                cols[1].status = 'At the hub'
+                cols[1].delivered_time = 'Not Delivered'
         self.total_distance = 0
         truck_packages, truck_index_list, truck_distances = load_truck(packageID_list, hash_table, distance_list)
         self.package_list = truck_packages
         self.index_list = truck_index_list
         self.distances = truck_distances
-
-        # for package in self.package_list:
-        #     print(package.status)
+        self.end_time = None
 
     def full_deliver(self):
-        # for package in self.package_list:
-        #     print(f"BLARGH {package.package_id} {package.address_index}" )
-        # for i in self.index_list:
-        #     print(i)
 
         for i, distance in enumerate(self.distances):
             self.total_distance += distance
@@ -65,42 +60,38 @@ class Trucks:
             for package in self.package_list:
 
                 if package.address_index == delivering_index and package.status != 'delivered':
-                    elapsed_minutes = self.total_distance / .3
-                    h, m = Interface.get_time_delta(elapsed_minutes)
-                    elapsed_delta = datetime.timedelta(hours=h, minutes=m)
+                    # elapsed_delta = self.convert_time()
                     package.status = "delivered"
-                    delivered_time = self.start_time + elapsed_delta
+                    # delivered_time = self.start_time + elapsed_delta
+                    delivered_time = convert_time(self.total_distance, self.start_time)
                     package.delivered_time = delivered_time
+                    # print(f"Delivering {package.package_id} at address index {delivering_index} at time"
+                    #       f" {package.delivered_time}.")
+        self.end_time = convert_time(self.total_distance, self.start_time)
 
-        print(self.total_distance)
+        # self.total_distance += self.distances[-1]
+        print(f"drove {self.distances[-1]} miles back to base. total_distance {self.total_distance} Arrive at {self.end_time}")
+        # print(self.total_distance)
 
     def deliver(self, current_distance, current_time):
         i = 0
         if current_time < self.start_time:
             return
         while self.total_distance < current_distance:
-            # print("total distance vs current", self.total_distance, current_distance)
             self.total_distance += self.distances[i]
             delivering_index = self.index_list[i + 1]
             i += 1
             for package in self.package_list:
                 if package.address_index == delivering_index and package.status != "Delivered":
-                    elapsed_minutes = self.total_distance / .3
-                    # print(f"ELAPSED MINUTES {elapsed_minutes}")
-                    h, m = Interface.get_time_delta(elapsed_minutes)
-                    elapsed_delta = datetime.timedelta(hours=h, minutes=m)
+                    # elapsed_delta = self.convert_time()
                     package.status = "Delivered"
-                    # print(f"Delivering package {package.package_id} at {self.start_time + elapsed_delta}")
-                    delivered_time = self.start_time + elapsed_delta
+                    # delivered_time = self.start_time + elapsed_delta
+                    delivered_time = convert_time(self.total_distance, self.start_time)
                     package.delivered_time = delivered_time
+                    if delivered_time >= current_time:
+                        return
             if i >= len(self.distances):
-                # print("BREAKING OUT THIS BITCH!")
                 break
-            # if self.total_distance >= current_distance:
-            #     break
-        # for package in self.package_list:
-        #     print(package)
-        # print(f"TOTAL DISTANCE: {self.total_distance}")
 
     def list_packages(self):
         for package in self.package_list:
@@ -110,3 +101,11 @@ class Trucks:
         for package in self.package_list:
             if package.package_id == package_id:
                 print(package)
+
+
+def convert_time(total_distance, start_time):
+    elapsed_minutes = total_distance / .3
+    h, m = Interface.get_time_delta(elapsed_minutes)
+    elapsed_delta = datetime.timedelta(hours=h, minutes=m)
+    delivered_time = start_time + elapsed_delta
+    return delivered_time

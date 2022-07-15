@@ -1,7 +1,5 @@
 import csv
-
 import Distances
-from HashTable import HashTable
 
 
 class Packages:
@@ -17,12 +15,12 @@ class Packages:
         self.special_notes = special_notes
         self.address_index = None
         self.status = "at the hub"
-        self.delivered_time = None
+        self.delivered_time = 'Not Delivered'
 
     def __str__(self):
-
         return f"Package ID: {self.package_id}, Address: {self.address} {self.city}, {self.state} {self.zip_code}. " \
-               f"Delivery Deadline: {self.delivery_deadline} Status: {self.status} Delivered At: {self.delivered_time}"
+               f"Delivery Deadline: {self.delivery_deadline} Weight: {self.mass_kilo}kg Status: {self.status}" \
+               f" Delivered At: {self.delivered_time} "
 
 
 def read_load(filename, hash_table):
@@ -37,9 +35,12 @@ def read_load(filename, hash_table):
             delivery_deadline = package[5]
             mass_kilo = package[6]
             special_notes = package[7]
+
             my_package = Packages(package_id, address, city, state, zip_code, delivery_deadline, mass_kilo,
                                   special_notes)
-
+            delayed_packages = [6, 25, 28, 32]
+            if my_package.package_id in delayed_packages:
+                my_package.status = 'Delayed'
             hash_table.insert(package_id, my_package)
 
 
@@ -47,7 +48,5 @@ def get_package_indexes(package_list, package_hash_table, distance_list):
     index_list = [1]
     for package in package_list:
         my_package = package_hash_table.search(package)
-        # print(f'Appending {Distances.get_index(my_package.address, distance_list)} '
-        #       f'from packageID {my_package.package_id}')
         index_list.append(Distances.get_index(my_package.address, distance_list))
     return index_list

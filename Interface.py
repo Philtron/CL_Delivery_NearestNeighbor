@@ -4,7 +4,7 @@ import datetime
 def welcome_message(total_miles, truck1, truck2, truck3, t1_package_list, t2_package_list, t3_package_list,
                     hash_table, distance_list):
     print("Welcome to the WGUPS Routing Program.")
-    print(f"All packages were delivered in {total_miles} miles")
+    print(f"All packages were delivered in {total_miles:.2f} miles")
     user_input = None
     while user_input != 'exit':
         user_input = input('''
@@ -14,18 +14,13 @@ Please enter 3 to view total mileage of all trucks.
 Please enter exit to exit.
 ''')
         if user_input == '1':
-            current_time = input("Please enter a time in the format of hh:mm:ss. For example, 10:30"
-                                 " would be 10:30:00: ")
+            current_time = input("Please enter a time in the format of hh:mm:ss, i.e. 9:30"
+                                 " would be 09:30:00.   ")
             elapsed_minutes = get_time_difference(current_time, truck1)
             h, m, s = current_time.split(':')
             current_time = datetime.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
-            # print(elapsed_minutes)
             current_distance = elapsed_minutes * 0.3
-            # print(f"current_distance: {current_distance}")
 
-            truck1.list_packages()
-            truck2.list_packages()
-            truck3.list_packages()
             truck1.reset(t1_package_list, hash_table, distance_list)
             truck2.reset(t2_package_list, hash_table, distance_list)
             truck3.reset(t3_package_list, hash_table, distance_list)
@@ -38,24 +33,20 @@ Please enter exit to exit.
             truck3.list_packages()
         elif user_input == '2':
             pack_id = input("Please enter the package ID you'd like to view: ")
-            current_time = input("Please enter a time in the format of hh:mm:ss. For example, 10:30"
-                                 " would be 10:30:00: ")
+            current_time = input("Please enter a time in the format of hh:mm:ss, i.e. 9:30"
+                                 " would be 09:30:00. ")
             elapsed_minutes = get_time_difference(current_time, truck1)
             h, m, s = current_time.split(':')
             current_time = datetime.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
 
-            # print(elapsed_minutes)
             current_distance = elapsed_minutes * 0.3
-            # print(f"current_distance: {current_distance}")
             truck1.reset(t1_package_list, hash_table, distance_list)
             truck2.reset(t2_package_list, hash_table, distance_list)
             truck3.reset(t3_package_list, hash_table, distance_list)
             truck1.deliver(current_distance, current_time)
             truck2.deliver(current_distance, current_time)
             truck3.deliver(current_distance, current_time)
-            # print(f"{pack_id} is of type {type(pack_id)}")
-            # for i in t1_package_list:
-            #     print(type(i))
+
             if int(pack_id) in truck1.package_list:
                 truck1.display_package(int(pack_id))
             elif int(pack_id) in truck2.package_list:
@@ -83,12 +74,10 @@ Please enter exit to exit.
 def get_time_difference(current_time, truck):
     (h, m, s) = current_time.split(':')
     current_time = datetime.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
-    # print(f"TIME DELTA = {current_time}")
     start_time = truck.start_time
     elapsed_time = current_time - start_time
     elapsed_seconds = elapsed_time.seconds
     elapsed_minutes = elapsed_seconds / 60
-    # print(f"ELAPSED_MINUTES {elapsed_minutes}")
     return elapsed_minutes
 
 
