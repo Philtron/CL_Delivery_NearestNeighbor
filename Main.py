@@ -10,20 +10,23 @@ from Trucks import Trucks, load_truck
 
 ht1 = HashTable()
 try:
+    # O(n)
     filename = 'Data/PackageFile.csv'
     Packages.read_load(filename, ht1)
-
+    # O(n)
     filename = "Data/DistanceTable2.csv"
     distance_list = Distances.read_load(filename)
 
     print('***')
     print("Truck One")
     truck_one_packageID_list = [13, 15, 16, 19, 20, 39, 30, 31, 34, 37, 40, 12, 1, 29, 14]
+    # O(n^2)
     truck_one_index_list, truck_one_distances = load_truck(truck_one_packageID_list, ht1,
                                                            distance_list)
     print(f"Truck one index list {truck_one_index_list}")
 
     truck_one = Trucks(truck_one_packageID_list, truck_one_index_list, truck_one_distances, "08:00:00", ht1)
+    # O(n^2)
     truck_one.full_deliver(ht1)
     print(f"Truck one start time {truck_one.start_time}")
     truck_one.list_packages(ht1)
@@ -56,49 +59,4 @@ try:
 except FileNotFoundError:
     print('File not found')
 
-# for i, rows in enumerate(hash_table.table):
-#     for j, cols in enumerate(hash_table.table[i]):
-#         if cols[1].package_id in packageID_list:
 
-#
-# for i, rows in enumerate(ht1.table):
-#     for j, cols in enumerate(ht1.table[i]):
-#         print(cols[1].status)
-#
-# print(f"All deliveries completed in {total_miles} miles")
-# print("TEST TRUCK")
-# test_truck_packageID_list = [15, 16, 24]
-# test_truck_packages, test_truck_index_list = load_truck(test_truck_packageID_list, ht1, distance_list)
-# testTruck_distances, used_indexes1 = Distances.nearest_neighbor(distance_list, test_truck_index_list)
-# test_truck = Trucks(test_truck_packages, test_truck_index_list, testTruck_distances)
-# test_truck.list_packages()
-# test_truck.deliver()
-# test_truck.list_packages()
-# address_list = []
-# index_list = [1]
-# for package in package_list:
-#     my_package = ht1.search(package)
-#     truck_packages.append(my_package)
-#     address_list.append(my_package.address)
-#     index_list.append(Distances.get_index(my_package.address, distance_list))
-# # print(address_list)
-#
-# print(index_list)
-# index_list = Packages.get_package_indexes(package_list, ht1, distance_list)
-# ------------------------------
-# for package in truck_packages:
-#     Distances.get_package_index(package, distance_list)
-
-# for i, rows in enumerate(ht1.table):
-#     for j, cols in enumerate(ht1.table[i]):
-#         if cols[1].package_id in package_list:
-#             print(cols[1].address_index)
-
-# for i, rows in enumerate(ht1.table):
-#     for j, cols in enumerate(ht1.table[i]):
-#         print(cols[1].address)
-# duplicates = [2,3,5]
-#
-# for i in range(6):
-#     if i in duplicates:
-#         print(f"{i} is in duplicates")

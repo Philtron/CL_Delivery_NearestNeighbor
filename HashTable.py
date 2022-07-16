@@ -4,6 +4,7 @@ class HashTable:
         for i in range(table_size):
             self.table.append([])
 
+    # O(n)
     def insert(self, key, item):
         bucket = int(key) % len(self.table)
         bucket_list = self.table[bucket]
@@ -17,6 +18,7 @@ class HashTable:
         bucket_list.append(key_value)
         return True
 
+    # O(n)
     def search(self, key):
         bucket = int(key) % len(self.table)
         bucket_list = self.table[bucket]
@@ -27,6 +29,7 @@ class HashTable:
                 return kv[1]
         return None
 
+    # O(n)
     def remove(self, key):
         bucket = int(key) % len(self.table)
         bucket_list = self.table[bucket]
@@ -35,14 +38,13 @@ class HashTable:
             if kv[0] == key:
                 bucket_list.remove([kv[0], kv[1]])
 
+    # O(n^2)
     def list_packages(self):
         for i, rows in enumerate(self.table):
             for j, cols in enumerate(self.table[i]):
                 print(cols[1])
-        # for row in self.table:
-        #     for package in row:
-        #         print(package)
 
+    # O(n^2)
     def reset_packages(self):
         delayed_packages = [6, 25, 28, 32]
 

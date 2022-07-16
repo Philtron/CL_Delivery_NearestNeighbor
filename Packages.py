@@ -15,14 +15,14 @@ class Packages:
         self.special_notes = special_notes
         self.address_index = None
         self.status = "at the hub"
-        self.delivered_time = 'Not Delivered'
+        # self.delivered_time = 'Not Delivered'
 
     def __str__(self):
         return f"Package ID: {self.package_id}, Address: {self.address} {self.city}, {self.state} {self.zip_code}. " \
-               f"Delivery Deadline: {self.delivery_deadline} Weight: {self.mass_kilo}kg Status: {self.status}" \
-               f" Delivered At: {self.delivered_time} "
+               f"Delivery Deadline: {self.delivery_deadline} Weight: {self.mass_kilo}kg Status: {self.status}"
 
 
+# O(n)
 def read_load(filename, hash_table):
     with open(filename) as csvfile:
         my_reader = csv.reader(csvfile)

@@ -1,6 +1,7 @@
 import csv
 
 
+# O(n)
 def read_load(filename):
     with open(filename) as csvfile:
         distance_list = list(csv.reader(csvfile, delimiter=','))
@@ -8,6 +9,7 @@ def read_load(filename):
     return distance_list
 
 
+# O(n)
 def get_index(business_name, distance_list):
     distance_row = distance_list[0]
     for i in range(len(distance_row)):
@@ -15,14 +17,17 @@ def get_index(business_name, distance_list):
             return i
 
 
+# O(1)
 def get_package_index(package, distance_list):
     package.address_index = get_index(package.address, distance_list)
 
 
+# O(1)
 def get_distance(x, y, distance_list):
     return distance_list[x][y]
 
 
+# O(n^3)
 def nearest_neighbor(distance_list, indexes_list):
     duplicates = []
     used_duplicates = []
