@@ -18,21 +18,25 @@ Please enter exit to exit.
         if user_input == '1':
             current_time = input("Please enter a time in the format of hh:mm:ss, i.e. 9:30"
                                  " would be 09:30:00.   ")
+            # print(current_time)
             elapsed_minutes = get_time_difference(current_time, truck1)
             h, m, s = current_time.split(':')
             current_time = datetime.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
             current_distance = elapsed_minutes * 0.3
-
+            hash_table.reset_packages()
             truck1.reset(t1_package_list, hash_table, distance_list)
             truck2.reset(t2_package_list, hash_table, distance_list)
             truck3.reset(t3_package_list, hash_table, distance_list)
-            truck1.deliver(current_distance, current_time)
-            truck2.deliver(current_distance, current_time)
-            truck3.deliver(current_distance, current_time)
+            # print("Made it here")
+            truck1.deliver(current_distance, current_time, hash_table)
+            truck2.deliver(current_distance, current_time, hash_table)
+            truck3.deliver(current_distance, current_time, hash_table)
+            print("Made it here")
 
-            truck1.list_packages()
-            truck2.list_packages()
-            truck3.list_packages()
+            hash_table.list_packages()
+            # truck1.list_packages(hash_table)
+            # truck2.list_packages(hash_table)
+            # truck3.list_packages(hash_table)
         elif user_input == '2':
             pack_id = input("Please enter the package ID you'd like to view: ")
             current_time = input("Please enter a time in the format of hh:mm:ss, i.e. 9:30"
@@ -42,35 +46,45 @@ Please enter exit to exit.
             current_time = datetime.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
 
             current_distance = elapsed_minutes * 0.3
+            hash_table.reset_packages()
+
             truck1.reset(t1_package_list, hash_table, distance_list)
             truck2.reset(t2_package_list, hash_table, distance_list)
             truck3.reset(t3_package_list, hash_table, distance_list)
-            truck1.deliver(current_distance, current_time)
-            truck2.deliver(current_distance, current_time)
-            truck3.deliver(current_distance, current_time)
+            truck1.deliver(current_distance, current_time, hash_table)
+            truck2.deliver(current_distance, current_time, hash_table)
+            truck3.deliver(current_distance, current_time, hash_table)
 
-            if int(pack_id) in truck1.package_list:
-                truck1.display_package(int(pack_id))
-            elif int(pack_id) in truck2.package_list:
-                truck2.display_package(pack_id)
-            elif int(pack_id) in truck3.package_list:
-                truck3.display_package(pack_id)
-            else:
-                print(hash_table.search(int(pack_id)))
+            # for j, rows in enumerate(hash_table.table):
+            #     for k, cols in enumerate(hash_table.table[j]):
+            #         if cols[1].package_id == pack_id:
+            print(hash_table.search(int(pack_id)))
+
+
+            # if int(pack_id) in truck1.package_list:
+            #     truck1.display_package(int(pack_id), hash_table)
+            # elif int(pack_id) in truck2.package_list:
+            #     truck2.display_package(pack_id, hash_table)
+            # elif int(pack_id) in truck3.package_list:
+            #     truck3.display_package(pack_id, hash_table)
+            # else:
+            #     print(hash_table.search(int(pack_id)))
 
         elif user_input == '3':
+            hash_table.reset_packages()
+
             truck1.reset(t1_package_list, hash_table, distance_list)
             truck2.reset(t2_package_list, hash_table, distance_list)
             truck3.reset(t3_package_list, hash_table, distance_list)
-            truck1.full_deliver()
-            truck2.full_deliver()
-            truck3.full_deliver()
+            truck1.full_deliver(hash_table)
+            truck2.full_deliver(hash_table)
+            truck3.full_deliver(hash_table)
 
             print(f"Truck One's Mileage: {truck1.total_distance}")
             print(f"Truck Two's Mileage: {truck2.total_distance}")
             print(f"Truck Three's Mileage: {truck3.total_distance}")
             total = truck1.total_distance + truck2.total_distance + truck3.total_distance
-            print(f"Total mileage for all trucks is {total}")
+            print(f"Total mileage for all trucks is {total:.2f}")
 
 
 def get_time_difference(current_time, truck):

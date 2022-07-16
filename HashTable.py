@@ -36,6 +36,20 @@ class HashTable:
                 bucket_list.remove([kv[0], kv[1]])
 
     def list_packages(self):
-        for row in self.table:
-            for package in row:
-                print(package)
+        for i, rows in enumerate(self.table):
+            for j, cols in enumerate(self.table[i]):
+                print(cols[1])
+        # for row in self.table:
+        #     for package in row:
+        #         print(package)
+
+    def reset_packages(self):
+        delayed_packages = [6, 25, 28, 32]
+
+        for i, rows in enumerate(self.table):
+            for j, cols in enumerate(self.table[i]):
+                if cols[1].package_id in delayed_packages:
+                    cols[1].status = 'Delayed'
+                else:
+                    cols[1].status = 'At the hub'
+                cols[1].delivered_time = 'Not Delivered'
