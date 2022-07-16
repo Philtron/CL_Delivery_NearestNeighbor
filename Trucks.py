@@ -16,7 +16,7 @@ def load_truck(packageID_list, hash_table, distance_list):
         truck_packages.append(my_package)
     for package in truck_packages:
         Distances.get_package_index(package, distance_list)
-        package.status = 'en route1'
+        package.status = 'en route'
     distances, used_indexes = Distances.nearest_neighbor(distance_list, index_list)
     # print(f"used_indexes: {used_indexes}")
     return truck_packages, used_indexes, distances
@@ -40,10 +40,15 @@ class Trucks:
             package.status = "en route"
 
     def reset(self, packageID_list, hash_table, distance_list):
-
+        delayed_packages = [6, 25, 28, 32]
+        # if my_package.package_id in delayed_packages:
+        #     my_package.status = 'Delayed'
         for i, rows in enumerate(hash_table.table):
             for j, cols in enumerate(hash_table.table[i]):
-                cols[1].status = 'At the hub'
+                if cols[1].package_id in delayed_packages:
+                    cols[1].status = 'Delayed'
+                else:
+                    cols[1].status = 'At the hub'
                 cols[1].delivered_time = 'Not Delivered'
         self.total_distance = 0
         truck_packages, truck_index_list, truck_distances = load_truck(packageID_list, hash_table, distance_list)
@@ -58,15 +63,10 @@ class Trucks:
             self.total_distance += distance
             delivering_index = self.index_list[i + 1]
             for package in self.package_list:
-
                 if package.address_index == delivering_index and package.status != 'delivered':
-                    # elapsed_delta = self.convert_time()
                     package.status = "delivered"
-                    # delivered_time = self.start_time + elapsed_delta
                     delivered_time = convert_time(self.total_distance, self.start_time)
                     package.delivered_time = delivered_time
-                    # print(f"Delivering {package.package_id} at address index {delivering_index} at time"
-                    #       f" {package.delivered_time}.")
         self.end_time = convert_time(self.total_distance, self.start_time)
 
         # self.total_distance += self.distances[-1]
@@ -83,15 +83,13 @@ class Trucks:
             i += 1
             for package in self.package_list:
                 if package.address_index == delivering_index and package.status != "Delivered":
-                    # elapsed_delta = self.convert_time()
                     package.status = "Delivered"
-                    # delivered_time = self.start_time + elapsed_delta
                     delivered_time = convert_time(self.total_distance, self.start_time)
                     package.delivered_time = delivered_time
                     if delivered_time >= current_time:
                         return
             if i >= len(self.distances):
-                break
+                return
 
     def list_packages(self):
         for package in self.package_list:

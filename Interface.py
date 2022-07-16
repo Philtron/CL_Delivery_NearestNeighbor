@@ -5,6 +5,8 @@ def welcome_message(total_miles, truck1, truck2, truck3, t1_package_list, t2_pac
                     hash_table, distance_list):
     print("Welcome to the WGUPS Routing Program.")
     print(f"All packages were delivered in {total_miles:.2f} miles")
+    print(f"The last truck returned to base at {get_last_truck_time(truck1, truck2, truck3)}")
+    print(f"Truck 1: {truck1.end_time} Truck 2: {truck2.end_time} Truck 3: {truck3.end_time}")
     user_input = None
     while user_input != 'exit':
         user_input = input('''
@@ -12,7 +14,7 @@ Please enter 1 to view the status of ALL packages at a specific time.
 Please enter 2 to view the status of a specific package at a specific time.
 Please enter 3 to view total mileage of all trucks.
 Please enter exit to exit.
-''')
+''').lower()
         if user_input == '1':
             current_time = input("Please enter a time in the format of hh:mm:ss, i.e. 9:30"
                                  " would be 09:30:00.   ")
@@ -54,7 +56,7 @@ Please enter exit to exit.
             elif int(pack_id) in truck3.package_list:
                 truck3.display_package(pack_id)
             else:
-                print(hash_table.search(26))
+                print(hash_table.search(int(pack_id)))
 
         elif user_input == '3':
             truck1.reset(t1_package_list, hash_table, distance_list)
@@ -92,3 +94,7 @@ def get_time_delta(elapsed_minutes):
             elapsed_minutes -= 1
             m += 1
     return h, m
+
+
+def get_last_truck_time(truck1, truck2, truck3):
+    return max(truck1.end_time, truck2.end_time, truck3.end_time)

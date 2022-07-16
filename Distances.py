@@ -10,9 +10,6 @@ def read_load(filename):
 
 def get_index(business_name, distance_list):
     distance_row = distance_list[0]
-    # print(f"Searching for {business_name}")
-    # print(distance_row)
-    index_list = []
     for i in range(len(distance_row)):
         if business_name in distance_row[i]:
             return i
@@ -37,20 +34,17 @@ def nearest_neighbor(distance_list, indexes_list):
 
             for i in range(repeat_times - 1):
                 duplicates.append(num)
-    # print(f"duplicates: {duplicates}")
 
     min_distance = 100.0
     distances = []
-    used_indexes = [indexes_list[0]]
     index = indexes_list[0]
+    used_indexes = [index]
+
     distance_row = distance_list[index]
 
     for i in range(len(indexes_list) - 1):
-
         for j in range(1, len(distance_row)):
-
             distance_row[j] = float(distance_row[j])
-
             if distance_row[j] < min_distance and (j != index or j in duplicates):
                 if j in indexes_list and j not in used_indexes:
                     min_distance = distance_row[j]
@@ -58,7 +52,6 @@ def nearest_neighbor(distance_list, indexes_list):
                 elif j in duplicates:
                     min_distance = 0
                     index = j
-
                     duplicates.remove(j)
         used_indexes.append(index)
         distances.append(min_distance)
@@ -67,10 +60,6 @@ def nearest_neighbor(distance_list, indexes_list):
     drive_home = distance_list[1][index]
     distances.append(drive_home)
     used_indexes.append(1)
-    print(f"drive_home[1][{index}]: {drive_home}")
-    # print(f"Used Indexes: {used_indexes}")
-    # print(f"{indexes_list}")
-    # print(f"Distances: {distances} Total: {sum(distances)}")
     return distances, used_indexes
 
 
