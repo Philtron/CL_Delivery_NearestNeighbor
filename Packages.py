@@ -3,7 +3,7 @@ import Distances
 
 
 class Packages:
-
+    # Constructor
     def __init__(self, package_id, address, city, state, zip_code, delivery_deadline, mass_kilo, special_notes):
         self.package_id = package_id
         self.address = address
@@ -15,15 +15,17 @@ class Packages:
         self.special_notes = special_notes
         self.address_index = None
         self.status = "at the hub"
-        # self.delivered_time = 'Not Delivered'
 
     def __str__(self):
         return f"Package ID: {self.package_id}, Address: {self.address} {self.city}, {self.state} {self.zip_code}. " \
                f"Delivery Deadline: {self.delivery_deadline} Weight: {self.mass_kilo}kg Status: {self.status}"
 
 
+# Iterates through packages CSV file and creates package objects from each row. It then inserts the package
+# Objects into the main hash table. Called with a list of the delayed packages to set the status to delayed instead of
+# at hub.
 # O(n)
-def read_load(filename, hash_table):
+def read_load(filename, hash_table, delayed_packages):
     with open(filename) as csvfile:
         my_reader = csv.reader(csvfile)
         for package in my_reader:
@@ -38,12 +40,16 @@ def read_load(filename, hash_table):
 
             my_package = Packages(package_id, address, city, state, zip_code, delivery_deadline, mass_kilo,
                                   special_notes)
-            delayed_packages = [6, 25, 28, 32]
+
             if my_package.package_id in delayed_packages:
                 my_package.status = 'Delayed'
+            else:
+                my_package.status = 'at hub'
             hash_table.insert(package_id, my_package)
 
 
+# iterates through the list of packages (truck specific lists) and uses the distance table to return a list containing
+# the address indexes of each package's delivery address.
 def get_package_indexes(package_list, package_hash_table, distance_list):
     index_list = [1]
     for package in package_list:
