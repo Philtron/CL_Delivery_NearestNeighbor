@@ -1,8 +1,9 @@
 Delivery Truck Dispatch System
-Algorithm Identification
+
+**Algorithm Identification**
 The program uses the Nearest Neighbor algorithm for package delivery. The algorithm looks for the nearest delivery address, moves to it, and repeats. It is self-adjusting, updating the delivery order as new packages are added.
 
-Overview
+**Overview**
 The program reads package and distance data from CSV files and stores them in hash tables and 2D arrays. Packages are split into 3 lists, determining which truck they are assigned to. Each truck accesses its own packages in the hash table using a filtered list. The nearest neighbor algorithm is used to order the delivery addresses, determining the delivery route for each truck. A Truck object is created with a reference to the main hash table and its delivery route, as well as a start time (converted to timedelta). The truck delivers all its packages and keeps track of total distance.
 
 The user interface allows the user to view all packages at a specific time, view a specific package at a specific time, and see the total distance for each truck and the sum of all truck distances.
